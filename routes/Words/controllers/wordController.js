@@ -1,7 +1,7 @@
 const Word = require('../models/Word');
 
 module.exports = {
-  getAllWords: (res, req) => {
+  getAllWords: (req, res) => {
     Word.find()
       .then((foundWords) => {
         return res.render('main/index', { wordsList: foundWords });
@@ -57,9 +57,11 @@ module.exports = {
       });
   },
   updateWord: (req, res) => {
+    console.log('hi1')
     Word.findById(req.params.wordId)
       .then((foundWord) => {
         if (!foundWord) {
+          console.log('hi')
           return res.status(400).send('No Word Found');
         }
         if (!req.body.meaning) {
@@ -69,7 +71,7 @@ module.exports = {
         foundWord.meaning = req.body.meaning;
 
         foundWord.save().then(() => {
-          return res.redirect(`/api/v1/words/single-word/${req.params.wordId}`);
+          return res.redirect(`/api/v1/words/update/${req.params.wordId}`);
         });
       })
       .catch((err) => {

@@ -1,17 +1,21 @@
+console.clear()
 const createError = require('http-errors');
 const express = require('express');
+const app = express();
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+require('dotenv').config();
+
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/Users/userRoutes');
-const wordRoutes = require('./routes/Words/wordRoutes');
+const wordRouter = require('./routes/Words/wordRoutes');
 
 mongoose
-  .connect(env.MONGODB_URI, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -32,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 
 app.use('/', indexRouter);
-app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/users', usersRouter);//what is this for
 app.use('/api/v1/words', wordRouter);
 
 // catch 404 and forward to error handler
